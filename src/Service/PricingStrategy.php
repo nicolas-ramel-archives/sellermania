@@ -4,27 +4,27 @@ namespace App\Service;
 
 class PricingStrategy
 {
-    private $priceReductionSameState = 0.01;
-    private $priceReductionHigherState = 1;
+    private $priceReductionSameConditionProduct = 0.01;
+    private $priceReductionHigherConditionProduct = 1;
 
-    public function getPrice(float $minimumPrice, string $state): float
+    public function getPrice(float $minimumPrice, string $conditionProduct): float
     {
         $bestPrice = null;
 
-        $currentLevelObject = $this->getStateObjectLevel($state);
+        $currentLevelObject = $this->getConditionProductLevel($conditionProduct);
 
         foreach ($this->getCompetitors() as $competitor) {
             // search for the best price with the same condition
-            if ($competitor["state"] == $state) {
-                if (!$bestPrice || $bestPrice > $competitor["price"] - $this->priceReductionSameState) {
-                    $bestPrice = $competitor["price"] - $this->priceReductionSameState;
+            if ($competitor["conditionProduct"] == $conditionProduct) {
+                if (!$bestPrice || $bestPrice > $competitor["price"] - $this->priceReductionSameConditionProduct) {
+                    $bestPrice = $competitor["price"] - $this->priceReductionSameConditionProduct;
                 }
             }
 
-            // search the best prices for the best states
-            if ($this->getStateObjectLevel($competitor["state"]) > $currentLevelObject) {
-                if (!$bestPrice || $bestPrice > $competitor["price"] - $this->priceReductionHigherState) {
-                    $bestPrice = $competitor["price"] - $this->priceReductionHigherState;
+            // search the best prices for the best condition product
+            if ($this->getConditionProductLevel($competitor["conditionProduct"]) > $currentLevelObject) {
+                if (!$bestPrice || $bestPrice > $competitor["price"] - $this->priceReductionHigherConditionProduct) {
+                    $bestPrice = $competitor["price"] - $this->priceReductionHigherConditionProduct;
                 }
             }
         }
@@ -38,47 +38,47 @@ class PricingStrategy
             [
                 "price" => 14.1,
                 "competitor" => "Abc jeux",
-                "state" => "Etat moyen"
+                "conditionProduct" => "Etat moyen"
             ],
             [
                 "price" => 16.2,
                 "competitor" => "Games-planete",
-                "state" => "Etat moyen"
+                "conditionProduct" => "Etat moyen"
             ],
             [
                 "price" => 18,
                 "competitor" => "Media-games",
-                "state" => "Bon état"
+                "conditionProduct" => "Bon état"
             ],
             [
                 "price" => 20,
                 "competitor" => "Micro-jeux",
-                "state" => "Très bon état"
+                "conditionProduct" => "Très bon état"
             ],
             [
                 "price" => 21.5,
                 "competitor" => "Top-Jeux-video",
-                "state" => "Très bon état"
+                "conditionProduct" => "Très bon état"
             ],
             [
                 "price" => 24.44,
                 "competitor" => "Tous-les-jeux",
-                "state" => "Bon état"
+                "conditionProduct" => "Bon état"
             ],
             [
                 "price" => 29,
                 "competitor" => "Diffusion-133",
-                "state" => "Comme neuf"
+                "conditionProduct" => "Comme neuf"
             ],
             [
                 "price" => 30.99,
                 "competitor" => "France-video",
-                "state" => "Neuf"
+                "conditionProduct" => "Neuf"
             ]
         ];
     }
 
-    public function getStateObject()
+    public function getConditionProduct()
     {
         return [
             "Etat moyen" => 1,
@@ -89,9 +89,9 @@ class PricingStrategy
         ];
     }
 
-    private function getStateObjectLevel(string $stateToSearch): int
+    private function getConditionProductLevel(string $conditionProductToSearch): int
     {
-        $states = $this->getStateObject();
-        return isset($states[$stateToSearch]) ? $states[$stateToSearch] : -1;
+        $conditionsProduct = $this->getConditionProduct();
+        return isset($conditionsProduct[$conditionProductToSearch]) ? $conditionsProduct[$conditionProductToSearch] : -1;
     }
 }
