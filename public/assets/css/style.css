@@ -1,0 +1,11 @@
+/* label du formulaire */
+form label {
+    font-weight: bold;
+} 
+
+/* messages d'erreur du formulaire */
+form ul {
+    background-color: #ebb1b1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

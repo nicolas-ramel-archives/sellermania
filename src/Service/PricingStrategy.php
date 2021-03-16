@@ -4,14 +4,28 @@ namespace App\Service;
 
 class PricingStrategy
 {
+    private $competitors = [];
     private $priceReductionSameConditionProduct = 0.01;
     private $priceReductionHigherConditionProduct = 1;
+
+    public function __construct()
+    {
+        $this->addCompetitor(14.1, "Abc jeux", "Etat moyen");
+        $this->addCompetitor(16.2, "Games-planete", "Etat moyen");
+        $this->addCompetitor(18, "Media-games", "Bon état");
+        $this->addCompetitor(20, "Micro-jeux", "Très bon état");
+        $this->addCompetitor(21.5, "Top-Jeux-video", "Très bon état");
+        $this->addCompetitor(24.44, "Tous-les-jeux", "Bon état");
+        $this->addCompetitor(29, "Diffusion-133", "Comme neuf");
+        $this->addCompetitor(30.99, "France-video", "Neuf");
+    }
 
     public function getPrice(float $minimumPrice, string $conditionProduct): float
     {
         $bestPrice = null;
 
         $currentLevelObject = $this->getConditionProductLevel($conditionProduct);
+        
 
         foreach ($this->getCompetitors() as $competitor) {
             // search for the best price with the same condition
@@ -32,50 +46,17 @@ class PricingStrategy
         return !$bestPrice || $bestPrice < $minimumPrice ? $minimumPrice : $bestPrice;
     }
 
+    public function addCompetitor(float $price, string $competitor, string $conditionProduct) {
+        $this->competitors[] = [
+            "price" => $price,
+            "competitor" => $competitor,
+            "conditionProduct" => $conditionProduct
+        ];
+    }
+
     public function getCompetitors()
     {
-        return [
-            [
-                "price" => 14.1,
-                "competitor" => "Abc jeux",
-                "conditionProduct" => "Etat moyen"
-            ],
-            [
-                "price" => 16.2,
-                "competitor" => "Games-planete",
-                "conditionProduct" => "Etat moyen"
-            ],
-            [
-                "price" => 18,
-                "competitor" => "Media-games",
-                "conditionProduct" => "Bon état"
-            ],
-            [
-                "price" => 20,
-                "competitor" => "Micro-jeux",
-                "conditionProduct" => "Très bon état"
-            ],
-            [
-                "price" => 21.5,
-                "competitor" => "Top-Jeux-video",
-                "conditionProduct" => "Très bon état"
-            ],
-            [
-                "price" => 24.44,
-                "competitor" => "Tous-les-jeux",
-                "conditionProduct" => "Bon état"
-            ],
-            [
-                "price" => 29,
-                "competitor" => "Diffusion-133",
-                "conditionProduct" => "Comme neuf"
-            ],
-            [
-                "price" => 30.99,
-                "competitor" => "France-video",
-                "conditionProduct" => "Neuf"
-            ]
-        ];
+        return $this->competitors ;
     }
 
     public function getConditionProduct()
@@ -89,9 +70,24 @@ class PricingStrategy
         ];
     }
 
+    public function getConditionProductName(int $level): string
+    {
+        $conditionProductName = array_search($level, $this->getConditionProduct());
+        return $conditionProductName === false ? "" : $conditionProductName ;
+    }
+
     private function getConditionProductLevel(string $conditionProductToSearch): int
     {
         $conditionsProduct = $this->getConditionProduct();
         return isset($conditionsProduct[$conditionProductToSearch]) ? $conditionsProduct[$conditionProductToSearch] : -1;
+    }
+
+    public function orderCompetitor() {
+        usort($this->competitors, function ($a, $b) {
+            if ($a["price"] == $b["price"]) {
+                return 0;
+            }
+            return ($a["price"] < $b["price"]) ? -1 : 1;
+        });
     }
 }

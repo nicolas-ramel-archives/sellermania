@@ -1,9 +1,37 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-Préparation home
 
-{{ form(form) }}
+<div class="row align-items-start">
+    <div class="col">
+        <h1>Positionnement tarifaire</h1>
+    </div>
+
+    {{ form(form) }}
 
 
+    {% if competitors is defined %}
+    <div class="col">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Prix de vente</th>
+                    <th>Vendeur</th>
+                    <th>Etat du produit</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for competitor in competitors %}
+                <tr class="{% if newCompeitorName == competitor.competitor %} table-info {% endif %}">
+                    <td>{{ competitor.price|number_format(2, '.', ' ') }} €</td>
+                    <td>{{ competitor.competitor }}</td>
+                    <td>{{ competitor.conditionProduct }}</td>
+                </tr>
+            {% endfor %}                
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

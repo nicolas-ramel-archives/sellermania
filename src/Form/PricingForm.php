@@ -20,10 +20,21 @@ class PricingForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('minimumPrice', NumberType::class)
-            ->add('conditionProduct', ChoiceType::class, [
-                'choices'  => $this->pricingStrategy->getConditionProduct(),
+            ->add('minimumPrice', NumberType::class, [
+                'row_attr' => ['class' => 'mb-3'],
+                'label' => "Prix plancher",
+                'label_attr' => ['class' => 'form-label'],
+                'attr' => ['class' => 'form-control']
             ])
-            ->add('save', SubmitType::class, ['label' => 'Comparer']);
+            
+            ->add('conditionProduct', ChoiceType::class, [
+                'row_attr' => ['class' => 'mb-3'],
+                'label' => "État du produit",
+                'label_attr' => ['class' => 'form-label'],
+                'choices'  => $this->pricingStrategy->getConditionProduct(),
+                'attr' => ['class' => 'form-control']
+            ])
+
+            ->add('comparer', SubmitType::class, ['label' => 'Comparer']);
     }
 }
