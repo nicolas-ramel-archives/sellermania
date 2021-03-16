@@ -1,5 +1,9 @@
-#Test technique  
+Test technique
+==============
   
 
-##Pour lancer le test unitaire  
-``php bin/phpunit tests/PricingTest``
+Pour lancer le test unitaire du service PricingStrategy
+-------------------------------------------------------
+```
+php bin/phpunit tests/PricingTest
+```
