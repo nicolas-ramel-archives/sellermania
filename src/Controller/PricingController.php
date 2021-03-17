@@ -40,6 +40,13 @@ class PricingController extends AbstractController
             $pricingStrategy->orderCompetitor();
 
             $data["competitors"] = $pricingStrategy->getCompetitors();
+
+            // send number of competitors
+            $data["position"] = $pricingStrategy->getBestPositionOfCompetitor($data["newCompeitorName"]) ;
+
+            // send number of competitors
+            $data["nbResults"] = count($data["competitors"]) ;
+            
         }
 
         // send data to view

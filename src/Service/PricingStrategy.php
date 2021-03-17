@@ -102,4 +102,16 @@ class PricingStrategy
             return ($a["price"] < $b["price"]) ? -1 : 1;
         });
     }
+
+    // return the position in array of competitor
+    public function getBestPositionOfCompetitor(string $competitorName) {
+        $position = 0 ;
+        foreach ($this->getCompetitors() as $competitor) {
+            $position++;
+            if ($competitor["competitor"] == $competitorName) {
+                return $position ;
+            }
+        }
+        return 0;
+    }
 }
