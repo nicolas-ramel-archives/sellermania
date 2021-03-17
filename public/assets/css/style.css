@@ -13,7 +13,7 @@ header {
     font-weight: 300;
 }
 
-#zoneFormulaire, #zonePosition, #zoneResultat {
+#zoneFormulaire, #zonePosition, #zoneResultat, #zonePrix {
     background-color: rgb(231, 231, 231);
     border-radius: 20px;
 }
@@ -38,12 +38,17 @@ form ul {
     border-radius: 15px;
 }
 
-#zonePosition {
+#zonePosition, #zonePrix {
     text-align: center;
 }
 
-#zonePosition div {
+#zonePosition div, #zonePrix div {
     font-size: 3em;
+}
+
+#zonePrix {
+    background-color: rgb(7, 146, 170);
+    color:#fff;
 }
 
 

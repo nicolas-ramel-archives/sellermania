@@ -9,10 +9,23 @@
         </div>
 
         {% if competitors is defined %}
-        <div class="alert" id="zonePosition">
-            Classement
-            <div>{{ position }}/{{ nbResults }}</div>
+        <div class="row">
+            <div class="col">
+                <div class="alert" id="zonePrix">
+                    Prix de vente
+                    <div>{{ productPrice|number_format(2, '.', ' ') }} €</div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="alert" id="zonePosition">
+                    Classement
+                    <div>{{ position }}/{{ nbResults }}</div>
+                </div>
+            </div>
         </div>
+
+        
         {% endif %}
     </div>
 

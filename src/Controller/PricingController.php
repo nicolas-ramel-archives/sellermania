@@ -31,10 +31,10 @@ class PricingController extends AbstractController
             $conditionProductName = $pricingStrategy->getConditionProductName($dataForm["conditionProduct"]) ;
 
             // search the price according to the price strategy
-            $productPrice = $pricingStrategy->getPrice($dataForm["minimumPrice"], $conditionProductName);
+            $data["productPrice"] = $pricingStrategy->getPrice($dataForm["minimumPrice"], $conditionProductName);
 
             // add result to competitor array
-            $pricingStrategy->addCompetitor($productPrice, $data["newCompeitorName"], $conditionProductName);
+            $pricingStrategy->addCompetitor($data["productPrice"], $data["newCompeitorName"], $conditionProductName);
 
             // sorting on the competitor array by price
             $pricingStrategy->orderCompetitor();
