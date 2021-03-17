@@ -10,6 +10,7 @@ class PricingStrategy
 
     public function __construct()
     {
+        // add all competitor (sample data)
         $this->addCompetitor(14.1, "Abc jeux", "Etat moyen");
         $this->addCompetitor(16.2, "Games-planete", "Etat moyen");
         $this->addCompetitor(18, "Media-games", "Bon état");
@@ -20,25 +21,30 @@ class PricingStrategy
         $this->addCompetitor(30.99, "France-video", "Neuf");
     }
 
+    // determines the selling price of an item based on a floor price and product condition
     public function getPrice(float $minimumPrice, string $conditionProduct): float
     {
         $bestPrice = null;
 
         $currentLevelObject = $this->getConditionProductLevel($conditionProduct);
         
-
+        // loop with all competitors
         foreach ($this->getCompetitors() as $competitor) {
             // search for the best price with the same condition
+            // set the price 0.01 € lower than the competitor
             if ($competitor["conditionProduct"] == $conditionProduct) {
-                if (!$bestPrice || $bestPrice > $competitor["price"] - $this->priceReductionSameConditionProduct) {
-                    $bestPrice = $competitor["price"] - $this->priceReductionSameConditionProduct;
+                $bestPriceToTest = $competitor["price"] - $this->priceReductionSameConditionProduct ;
+                if ((!$bestPrice || $bestPrice > $bestPriceToTest) && $bestPriceToTest > $minimumPrice) {
+                    $bestPrice = $bestPriceToTest;
                 }
             }
 
             // search the best prices for the best condition product
+            // set the price 1 € lower than the competitor
             if ($this->getConditionProductLevel($competitor["conditionProduct"]) > $currentLevelObject) {
-                if (!$bestPrice || $bestPrice > $competitor["price"] - $this->priceReductionHigherConditionProduct) {
-                    $bestPrice = $competitor["price"] - $this->priceReductionHigherConditionProduct;
+                $bestPriceToTest = $competitor["price"] - $this->priceReductionHigherConditionProduct ;
+                if ((!$bestPrice || $bestPrice > $bestPriceToTest) && $bestPriceToTest > $minimumPrice) {
+                    $bestPrice = $bestPriceToTest;
                 }
             }
         }
@@ -46,6 +52,7 @@ class PricingStrategy
         return !$bestPrice || $bestPrice < $minimumPrice ? $minimumPrice : $bestPrice;
     }
 
+    // add a compititor to internal array
     public function addCompetitor(float $price, string $competitor, string $conditionProduct) {
         $this->competitors[] = [
             "price" => $price,
@@ -54,11 +61,13 @@ class PricingStrategy
         ];
     }
 
+    // get all competitors set in array
     public function getCompetitors()
     {
         return $this->competitors ;
     }
 
+    // get all condition possible Name => Lebel
     public function getConditionProduct()
     {
         return [
@@ -70,18 +79,21 @@ class PricingStrategy
         ];
     }
 
+    // return condition product label (parameter : level) 
     public function getConditionProductName(int $level): string
     {
         $conditionProductName = array_search($level, $this->getConditionProduct());
         return $conditionProductName === false ? "" : $conditionProductName ;
     }
 
+    // return the level (parameter : condition product) 
     private function getConditionProductLevel(string $conditionProductToSearch): int
     {
         $conditionsProduct = $this->getConditionProduct();
         return isset($conditionsProduct[$conditionProductToSearch]) ? $conditionsProduct[$conditionProductToSearch] : -1;
     }
 
+    // order competitor by price
     public function orderCompetitor() {
         usort($this->competitors, function ($a, $b) {
             if ($a["price"] == $b["price"]) {

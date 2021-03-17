@@ -19,33 +19,33 @@ class PricingController extends AbstractController
         $data = [];
         $data["newCompeitorName"] = "Nicolas RAMEL" ;
 
-        // creation du formulaire
+        // Form creation
         $form = $this->createForm(PricingForm::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // recupère les données du formulaire
+            // retrieves the data from the form
             $dataForm = $form->getData();
 
-            // recupère le libellé de l'état du produit
+            // retrieve the label of the product condition
             $conditionProductName = $pricingStrategy->getConditionProductName($dataForm["conditionProduct"]) ;
 
-            // recherche le tarif suivant la stratégie de prix
+            // search the price according to the price strategy
             $productPrice = $pricingStrategy->getPrice($dataForm["minimumPrice"], $conditionProductName);
 
-            // ajoute au tableau de resultat
+            // add result to competitor array
             $pricingStrategy->addCompetitor($productPrice, $data["newCompeitorName"], $conditionProductName);
 
-            // tri sur le tableau des concurrents par le prix
+            // sorting on the competitor array by price
             $pricingStrategy->orderCompetitor();
 
             $data["competitors"] = $pricingStrategy->getCompetitors();
         }
 
-        // transfert le formulaire à la vue
+        // send data to view
         $data['form'] = $form->createView();
 
-        // rendu de la page
+        // render the page
         return $this->render('home.html.twig', $data);
     }
 }
