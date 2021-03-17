@@ -12,9 +12,9 @@ class PricingTest extends TestCase
     {
         $pricingStrategy = new PricingStrategy();
 
-        // doit retourner 15
-        $result = $pricingStrategy->getPrice(15, "Etat moyen");
-        $this->assertEquals(15, $result);
+        // doit retourner 14.09
+        $result = $pricingStrategy->getPrice(10, "Etat moyen");
+        $this->assertEquals(14.09, $result);
 
         // doit retourner 17.99
         $result = $pricingStrategy->getPrice(15, "Bon état");
